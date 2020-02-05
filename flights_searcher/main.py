@@ -23,11 +23,6 @@ def main(search_parameters):
             print('Good buy. Thanks for using our app')
             break
 
-        except FlightsSearcherError as error:
-            print(error)
-
-            sys.exit(1)
-
         print_flights(flights)
 
         try:
