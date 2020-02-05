@@ -14,7 +14,7 @@ class AirblueComApi:
             iata_from, iata_to,
             date_on, date_return_on)
         with warnings.catch_warnings():
-            warnings.simplefilter("ignore")
+            warnings.simplefilter('ignore')
             search_page = AirblueComApi.__get_search_page(parameters)
         result = AirblueComApi.__parse_search_page(search_page)
 
@@ -23,7 +23,7 @@ class AirblueComApi:
     @staticmethod
     def avaliable_cities():
         with warnings.catch_warnings():
-            warnings.simplefilter("ignore")
+            warnings.simplefilter('ignore')
             shedule_page = AirblueComApi.__get_shedule_page()
 
         cities = AirblueComApi.__parse_shedule_page(shedule_page)
