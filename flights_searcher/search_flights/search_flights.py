@@ -1,36 +1,38 @@
 import itertools
 from datetime import timedelta
 from requests import exceptions as request_exceptions
-from ..validator_input_parameters.validation_search_parameters \
+from exceptions.flights_searcher_exceptions import FlightsSearcherError
+from validator_input_parameters.validation_search_parameters \
     import validation_search_parameters
-from ..airblue_com_api.class_airblue_com_api import AirblueComApi
-from ..search_flights.class_flight import Flight
+from airblue_com_api.class_airblue_com_api import AirblueComApi
+from search_flights.class_flight import Flight
 
 
 def search_flights(parameters):
 
+    parameters = validation_search_parameters(parameters)
+
     try:
-        parameters = validation_search_parameters(parameters)
         dict_result_search = AirblueComApi.search_flights(*parameters)
         list_result_search = [[Flight(flight) for flight in trip]
                               for trip in
                               dict_result_search.values()]
 
     except request_exceptions.HTTPError as error:
-        raise Exception(error.__str__() + ' Please contact support')
+        raise FlightsSearcherError(error.__str__() + ' Please contact support')
 
     except request_exceptions.RequestException:
-        raise Exception('Cannot get response from airblue.com. '
+        raise FlightsSearcherError('Cannot get response from airblue.com. '
                         'Please check your internet connection '
                         'and restart the application')
 
     except (IndexError, KeyError):
-        raise Exception('Failed to find all the necessary information in '
+        raise FlightsSearcherError('Failed to find all the necessary information in '
                         'the response from airblue.com. '
                         'Please try searching again or contact support.')
 
     except Exception:
-        raise Exception('An error occurred while running the application. '
+        raise FlightsSearcherError('An error occurred while running the application. '
                         'Please try searching again or contact support.')
 
     try:
@@ -46,8 +48,8 @@ def search_flights(parameters):
                       for round_trip in round_trips]
 
     except Exception:
-        raise Exception('An error occurred while running the application. '
-                        'Please try searching again or contact support.')
+        raise FlightsSearcherError('An error occurred while running the application. '
+                           'Please try searching again or contact support.')
 
     return result
 

@@ -1,37 +1,33 @@
-from ..airblue_com_api.class_airblue_com_api import AirblueComApi
-from ..validator_input_parameters import validation_functions
+from airblue_com_api.class_airblue_com_api import AirblueComApi
+from validator_input_parameters import validation_functions
 
 
 def validation_search_parameters(arguments):
     avaliable_cities = AirblueComApi.avaliable_cities()
     while True:
-        try:
-            arguments = re_input_all_arguments(arguments)
+        arguments = re_input_all_arguments(arguments)
 
-            for i in range(len(arguments)):
-                arguments = re_input_one_argument(arguments, i,
-                                                  avaliable_cities)
+        for i in range(len(arguments)):
+            arguments = re_input_one_argument(arguments, i,
+                                              avaliable_cities)
 
-            if len(arguments) == 4:
-                arguments = re_input_dates(arguments)
+        if len(arguments) == 4:
+            arguments = re_input_dates(arguments)
 
-            print('Check for correctness your search parameters', sep='\n')
-            parameters_for_checking = [f'{parameter[0]}: {parameter[1]}'
-                                       for parameter in zip(['departure',
-                                                             'arrival',
-                                                             'date on',
-                                                             'date return on'],
-                                                            arguments)]
-            print(*parameters_for_checking, sep='\n')
+        print('Check for correctness your search parameters', sep='\n')
+        parameters_for_checking = [f'{parameter[0]}: {parameter[1]}'
+                                   for parameter in zip(['departure',
+                                                         'arrival',
+                                                         'date on',
+                                                         'date return on'],
+                                                        arguments)]
+        print(*parameters_for_checking, sep='\n')
 
-            if input('Are your parameters is a correct? (y/n)\n') == 'y':
-                break
-            else:
-                arguments = input('Enter the search parameters '
-                                  'with a space\n').split()
-        except EOFError:
-            print('Good buy. Thanks for using our app')
-            raise EOFError
+        if input('Are your parameters is a correct? (y/n)\n') == 'y':
+            break
+        else:
+            arguments = input('Enter the search parameters '
+                              'with a space\n').split()
 
     return arguments
 
