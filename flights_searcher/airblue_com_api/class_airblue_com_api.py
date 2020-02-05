@@ -10,12 +10,12 @@ class AirblueComApi:
     @staticmethod
     def search_flights(iata_from, iata_to, date_on, date_return_on=''):
 
-        parametrs = AirblueComApi.__formation_parametrs_dict(
+        parameters = AirblueComApi.__formation_parameters_dict(
             iata_from, iata_to,
             date_on, date_return_on)
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            search_page = AirblueComApi.__get_search_page(parametrs)
+            search_page = AirblueComApi.__get_search_page(parameters)
         result = AirblueComApi.__parse_search_page(search_page)
 
         return result
@@ -31,9 +31,9 @@ class AirblueComApi:
         return cities
 
     @staticmethod
-    def __get_search_page(parametrs):
+    def __get_search_page(parameters):
         url = 'https://www.airblue.com/bookings/flight_selection.aspx'
-        request = requests.get(url, params=parametrs)
+        request = requests.get(url, params=parameters)
         request.raise_for_status()
 
         return html.fromstring(request.text)
@@ -47,8 +47,8 @@ class AirblueComApi:
         return html.fromstring(request.text)
 
     @staticmethod
-    def __formation_parametrs_dict(iata_from, iata_to,
-                                   date_on, date_return_on):
+    def __formation_parameters_dict(iata_from, iata_to,
+                                    date_on, date_return_on):
 
         date_on = datetime.strftime(date_on, '%d.%m.%Y')
         date_on = date_on.split('.')
