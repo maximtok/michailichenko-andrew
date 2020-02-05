@@ -23,17 +23,19 @@ def search_flights(parameters):
 
     except request_exceptions.RequestException:
         raise FlightsSearcherError('Cannot get response from airblue.com. '
-                        'Please check your internet connection '
-                        'and restart the application')
+                                   'Please check your internet connection '
+                                   'and restart the application')
 
     except (IndexError, KeyError):
-        raise FlightsSearcherError('Failed to find all the necessary information in '
-                        'the response from airblue.com. '
-                        'Please try searching again or contact support.')
+        raise FlightsSearcherError('Failed to find all the necessary '
+                                   'information in the response from '
+                                   'airblue.com. Please try searching again '
+                                   'or contact support.')
 
     except Exception:
-        raise FlightsSearcherError('An error occurred while running the application. '
-                        'Please try searching again or contact support.')
+        raise FlightsSearcherError('An error occurred while running '
+                                   'the application. Please try searching '
+                                   'again or contact support.')
 
     try:
         if len(list_result_search) == 1:
@@ -48,8 +50,9 @@ def search_flights(parameters):
                       for round_trip in round_trips]
 
     except Exception:
-        raise FlightsSearcherError('An error occurred while running the application. '
-                           'Please try searching again or contact support.')
+        raise FlightsSearcherError('An error occurred while running the '
+                                   'application. Please try searching again '
+                                   'or contact support.')
 
     return result
 
