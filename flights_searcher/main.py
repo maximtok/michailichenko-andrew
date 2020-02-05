@@ -2,7 +2,7 @@ import sys
 import click
 from search_flights.search_flights import search_flights
 from search_flights.print_flights import print_flights
-from exceptions.flights_searcher_exceptions import FlightsSearcherError
+
 
 @click.command(context_settings=dict(allow_extra_args=True))
 @click.pass_context
@@ -22,11 +22,6 @@ def main(search_parameters):
         except (EOFError, KeyboardInterrupt):
             print('Good buy. Thanks for using our app')
             break
-
-        except FlightsSearcherError as error:
-            print(error)
-
-            sys.exit(1)
 
         print_flights(flights)
 

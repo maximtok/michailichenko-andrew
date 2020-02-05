@@ -1,2 +1,0 @@
-class FlightsSearcherError(Exception):
-    pass

@@ -1,7 +1,7 @@
+import sys
 import itertools
 from datetime import timedelta
 from requests import exceptions as request_exceptions
-from exceptions.flights_searcher_exceptions import FlightsSearcherError
 from validator_input_parameters.validation_search_parameters \
     import validation_search_parameters
 from airblue_com_api.class_airblue_com_api import AirblueComApi
@@ -9,10 +9,9 @@ from search_flights.class_flight import Flight
 
 
 def search_flights(parameters):
-
-    parameters = validation_search_parameters(parameters)
-
     try:
+        parameters = validation_search_parameters(parameters)
+
         dict_result_search = AirblueComApi.search_flights(*parameters)
         list_result_search = [[Flight(flight) for flight in trip]
                               for trip in
@@ -22,20 +21,23 @@ def search_flights(parameters):
         raise FlightsSearcherError(error.__str__() + ' Please contact support')
 
     except request_exceptions.RequestException:
-        raise FlightsSearcherError('Cannot get response from airblue.com. '
-                                   'Please check your internet connection '
-                                   'and restart the application')
+        print('Cannot get response from airblue.com. '
+              'Please check your internet connection '
+              'and restart the application')
+        sys.exit(1)
 
     except (IndexError, KeyError):
-        raise FlightsSearcherError('Failed to find all the necessary '
-                                   'information in the response from '
-                                   'airblue.com. Please try searching again '
-                                   'or contact support.')
+        print('Failed to find all the necessary '
+              'information in the response from '
+              'airblue.com. Please try searching again '
+              'or contact support.')
+        sys.exit(1)
 
     except Exception:
-        raise FlightsSearcherError('An error occurred while running '
-                                   'the application. Please try searching '
-                                   'again or contact support.')
+        print('An error occurred while running '
+              'the application. Please try searching '
+              'again or contact support.')
+        sys.exit(1)
 
     try:
         if len(list_result_search) == 1:
@@ -50,9 +52,9 @@ def search_flights(parameters):
                       for round_trip in round_trips]
 
     except Exception:
-        raise FlightsSearcherError('An error occurred while running the '
-                                   'application. Please try searching again '
-                                   'or contact support.')
+        print('An error occurred while running the '
+              'application. Please try searching again '
+              'or contact support.')
 
     return result
 
