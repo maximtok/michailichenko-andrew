@@ -1,7 +1,8 @@
+import sys
 import click
-from lib.search_flights.search_flights import search_flights
-from lib.search_flights.print_flights import print_flights
-
+from search_flights.search_flights import search_flights
+from search_flights.print_flights import print_flights
+from exceptions.flights_searcher_exceptions import FlightsSearcherError
 
 @click.command(context_settings=dict(allow_extra_args=True))
 @click.pass_context
@@ -18,25 +19,31 @@ def main(search_parameters):
     while True:
         try:
             flights = search_flights(search_parameters)
-        except Exception as error:
-            print(error)
-
-            return 1
-
-        print_flights(flights)
-
-        if input('Search again? (y/n)\n') == 'y':
-            try:
-                search_parameters = input(
-                    'Enter the search parameters with a space\n').split()
-            except EOFError:
-                print('Good buy. Thanks for using our app')
-                break
-        else:
+        except (EOFError, KeyboardInterrupt):
             print('Good buy. Thanks for using our app')
             break
 
-    return 0
+        except FlightsSearcherError as error:
+            print(error)
+
+            sys.exit(1)
+
+        print_flights(flights)
+
+        try:
+            if input('Search again? (y/n)\n') == 'y':
+
+                search_parameters = input(
+                    'Enter the search parameters with a space\n').split()
+            else:
+                print('Good buy. Thanks for using our app')
+                break
+
+        except (EOFError, KeyboardInterrupt):
+            print('Good buy. Thanks for using our app')
+            break
+
+    sys.exit(0)
 
 
 if __name__ == '__main__':
