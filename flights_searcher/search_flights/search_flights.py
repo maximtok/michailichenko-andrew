@@ -18,7 +18,8 @@ def search_flights(parameters):
                               dict_result_search.values()]
 
     except request_exceptions.HTTPError as error:
-        raise FlightsSearcherError(error.__str__() + ' Please contact support')
+        print(error.__str__() + ' Please contact support')
+        sys.exit(1)
 
     except request_exceptions.RequestException:
         print('Cannot get response from airblue.com. '
