@@ -8,11 +8,13 @@ from airblue_com_api.class_airblue_com_api import AirblueComApi
 from search_flights.class_flight import Flight
 
 
-def search_flights(parameters):
+def search_flights(parameters, available_cities, flexible_dates_flag):
     try:
-        parameters = validation_search_parameters(parameters)
 
-        dict_result_search = AirblueComApi.search_flights(*parameters)
+        parameters = validation_search_parameters(parameters, available_cities)
+
+        dict_result_search = AirblueComApi.search_flights(*parameters,
+            flexible_dates_flag=flexible_dates_flag)
         list_result_search = [[Flight(flight) for flight in trip]
                               for trip in
                               dict_result_search.values()]
@@ -39,7 +41,7 @@ def search_flights(parameters):
               'the application. Please try searching '
               'again or contact support.')
         sys.exit(1)
-
+    
     try:
         if len(list_result_search) == 1:
             result = sorted_flights(list_result_search)
@@ -56,6 +58,7 @@ def search_flights(parameters):
         print('An error occurred while running the '
               'application. Please try searching again '
               'or contact support.')
+        sys.exit(1)
 
     return result
 

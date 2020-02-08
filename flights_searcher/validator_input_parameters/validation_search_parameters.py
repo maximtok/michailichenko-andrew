@@ -1,15 +1,14 @@
-from airblue_com_api.class_airblue_com_api import AirblueComApi
 from validator_input_parameters import validation_functions
 
 
-def validation_search_parameters(arguments):
-    avaliable_cities = AirblueComApi.avaliable_cities()
+def validation_search_parameters(arguments, available_cities):
+
     while True:
         arguments = re_input_all_arguments(arguments)
 
         for i in range(len(arguments)):
             arguments = re_input_one_argument(arguments, i,
-                                              avaliable_cities)
+                                              available_cities)
 
         if len(arguments) == 4:
             arguments = re_input_dates(arguments)
