@@ -1,3 +1,5 @@
+"""This module contains class InterfaceHandler"""
+
 from abc import ABC, abstractmethod
 
 

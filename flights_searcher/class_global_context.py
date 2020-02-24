@@ -1,7 +1,25 @@
+"""This module contains class GlobalContext"""
+
 from airline_api.class_airblue_com_api import AirblueComApi
-from validators_input_parameters.class_validator_iata_codes_and_dates \
+from validators_input_parameters.class_iata_codes_and_dates_validator \
     import ValidatorIataCodesAndDates
 from handlers.class_handler import Handler
+from validators_input_parameters.validation_classes.\
+    class_iata_code_correctness_validator import IataCodeCorrectnessValidator
+from validators_input_parameters.validation_classes.\
+    class_iata_code_availability_validator import IataCodeAvailabilityValidator
+from validators_input_parameters.validation_classes.\
+    class_format_date_validator import FormatDateValidator
+from validators_input_parameters.validation_classes.\
+    class_compare_with_todays_date import CompareWithTodaysDate
+from validators_input_parameters.validation_classes.\
+    class_count_parameters_validator import CountParametersValidator
+from validators_input_parameters.validation_classes.\
+    class_inequality_iata_codes_validator import InequalityIataCodesValidator
+from validators_input_parameters.validation_classes.\
+    class_date_delta_validator import DateDeltaValidator
+from parameters_getter.class_parameters_getter \
+    import ParametersGetter
 
 
 class GlobalContext:
@@ -15,6 +33,89 @@ class GlobalContext:
     def __init__(self, parameters, **kwargs):
         self.__dict__.update(kwargs)
         self.parameters = parameters
-        self.handler = Handler()
+        self._parameter_names = ['Count parameters', 'IATA-code from',
+                                 'IATA-code to', 'Date on', 'Date return on']
         self.airline_api = AirblueComApi()
-        self.validator = ValidatorIataCodesAndDates()
+        self.handler = Handler()
+
+        self.available_cities = self.airline_api.get_available_cities()
+
+        self.parameters_getter = ParametersGetter(self._parameter_names,
+                                                  self.available_cities)
+
+        self.validator = ValidatorIataCodesAndDates(
+            self.parameters, self._parameter_names,
+            self._create_parameter_validators_list())
+
+    def set_new_parameters(self, parameters):
+        """This method sets new parameters and sets new validator"""
+
+        self.parameters = parameters
+        self.validator = ValidatorIataCodesAndDates(
+            self.parameters, self._parameter_names,
+            self._create_parameter_validators_list())
+
+    def _create_parameter_validators_list(self):
+        """This method creates parameters validators list"""
+
+        result = [CountParametersValidator()]
+
+        if len(self.parameters) in (3, 4):
+            result.extend([self._create_iata_code_from_validator(),
+                           self._create_iata_code_to_validator(),
+                           self._create_date_on_validator()])
+
+        if len(self.parameters) == 4:
+            result.append(self._create_date_return_on_validator())
+
+        return result
+
+    def _create_iata_code_from_validator(self):
+        """This method creates chain iata-code from validation"""
+
+        validator_iata_code_correctness = IataCodeCorrectnessValidator()
+        validator_iata_code_availability = IataCodeAvailabilityValidator(
+            self.available_cities)
+
+        validator_iata_code_correctness.set_next(
+            validator_iata_code_availability)
+
+        return validator_iata_code_correctness
+
+    def _create_iata_code_to_validator(self):
+        """This method creates chain iata-code to validation"""
+
+        validator_iata_code_correctness = IataCodeCorrectnessValidator()
+        validator_iata_code_availability = IataCodeAvailabilityValidator(
+            self.available_cities)
+        validator_iata_codes_inequality = InequalityIataCodesValidator(
+            self.parameters[0])
+        validator_iata_code_correctness.set_next(
+            validator_iata_code_availability)
+        validator_iata_code_availability.set_next(
+            validator_iata_codes_inequality)
+
+        return validator_iata_code_correctness
+
+    @staticmethod
+    def _create_date_on_validator():
+        """This method creates chain date on validation"""
+
+        validator_format_date = FormatDateValidator()
+        compare_with_todays_date = CompareWithTodaysDate()
+
+        validator_format_date.set_next(compare_with_todays_date)
+
+        return validator_format_date
+
+    def _create_date_return_on_validator(self):
+        """This method creates chain date return on validation"""
+
+        validator_format_date = FormatDateValidator()
+        compare_with_todays_date = CompareWithTodaysDate()
+        validator_date_delta = DateDeltaValidator(self.parameters[2])
+
+        validator_format_date.set_next(compare_with_todays_date)
+        compare_with_todays_date.set_next(validator_date_delta)
+
+        return validator_format_date

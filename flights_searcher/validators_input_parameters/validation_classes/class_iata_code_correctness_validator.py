@@ -1,7 +1,9 @@
-from interfaces.interface_validation_classes import InterfaceValidator
+"""This module contains class IataCodeCorrectnessValidator"""
+
+from interfaces.interface_validation_classes import InterfaceValidationClasses
 
 
-class IataCodeCorrectnessValidator(InterfaceValidator):
+class IataCodeCorrectnessValidator(InterfaceValidationClasses):
     """This class implements iata-code correctness validator"""
 
     def validating(self, parameter, parameter_name):
@@ -14,6 +16,4 @@ class IataCodeCorrectnessValidator(InterfaceValidator):
                   'be three capital letters')
             return False
 
-        else:
-
-            return super().validating(parameter, parameter_name)
+        return super().validating(parameter, parameter_name)

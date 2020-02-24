@@ -1,3 +1,5 @@
+"""This module contains class InterfaceAirlineSiteApi"""
+
 from abc import ABC, abstractmethod
 
 

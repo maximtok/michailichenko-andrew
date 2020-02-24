@@ -1,15 +1,17 @@
+"""This module contains class FormatDateValidator"""
+
 from datetime import datetime
-from interfaces.interface_validation_classes import InterfaceValidator
+from interfaces.interface_validation_classes import InterfaceValidationClasses
 
 
-class FormatDateValidator(InterfaceValidator):
+class FormatDateValidator(InterfaceValidationClasses):
     """This class implements format date validator"""
 
     def validating(self, parameter, parameter_name):
         """This method validates format date"""
 
         try:
-            parameter = datetime.strptime(parameter, '%d.%m.%Y').date()
+            datetime.strptime(parameter, '%d.%m.%Y').date()
 
             return super().validating(parameter, parameter_name)
 

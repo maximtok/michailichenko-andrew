@@ -1,3 +1,5 @@
+"""This module contains main function"""
+
 import sys
 import click
 from search_flights import searching_flights
@@ -11,10 +13,12 @@ from search_flights import searching_flights
                    'Available flights per week will be printed')
 @click.pass_context
 def main(search_parameters, print_available_cities, flexible_dates):
-    '''This application can search flights\n
+    """
+    This application can search flights\n
     Example input parameters: KHI ISB 02.02.2020 05.02.2020\n
     IATA-code must be three capital letters\n
-    Date must be a format DD.MM.YYYY\n'''
+    Date must be a format DD.MM.YYYY\n
+    """
 
     searching_flights(search_parameters.args,
                       print_available_cities_flag=print_available_cities,

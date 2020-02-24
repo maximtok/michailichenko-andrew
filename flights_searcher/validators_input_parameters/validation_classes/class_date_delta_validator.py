@@ -1,8 +1,10 @@
+"""This module contains class DateDeltaValidator"""
+
 from datetime import datetime
-from interfaces.interface_validation_classes import InterfaceValidator
+from interfaces.interface_validation_classes import InterfaceValidationClasses
 
 
-class DateDeltaValidator(InterfaceValidator):
+class DateDeltaValidator(InterfaceValidationClasses):
     """This class implements date delta validator"""
 
     def __init__(self, first_date):
@@ -13,7 +15,7 @@ class DateDeltaValidator(InterfaceValidator):
 
         try:
             first_date = datetime.strptime(self.first_date, '%d.%m.%Y').date()
-            print(first_date)
+
         except ValueError:
             print(f'Error in {parameter_name}: '
                   f'Cannot compare date on and date return on, '
@@ -21,13 +23,13 @@ class DateDeltaValidator(InterfaceValidator):
 
             return False
 
-        if parameter < first_date:
+        input_parameter = datetime.strptime(parameter, '%d.%m.%Y').date()
+
+        if input_parameter < first_date:
             print(f'Error in {parameter_name}: '
                   f'Return date must be later '
                   'than departure date')
 
             return False
 
-        else:
-
-            return super().validating(parameter, parameter_name)
+        return super().validating(parameter, parameter_name)

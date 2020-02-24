@@ -1,3 +1,5 @@
+"""This module contains class AirblueComApi"""
+
 from datetime import datetime, timedelta
 from copy import deepcopy
 from lxml import html

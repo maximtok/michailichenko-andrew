@@ -1,3 +1,5 @@
+"""This module contains repeat_search_decorator"""
+
 import sys
 
 
@@ -21,7 +23,7 @@ def repeat_search_decorator(func):
                     print('Good buy. Thanks for using our app')
                     break
 
-            except (EOFError, KeyboardInterrupt):
+            except KeyboardInterrupt:
                 print('Good buy. Thanks for using our app')
                 sys.exit(0)
 

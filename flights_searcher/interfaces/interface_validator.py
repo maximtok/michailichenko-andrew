@@ -1,22 +1,22 @@
+"""This module contains class InterfaceValidator"""
+
 from abc import ABC, abstractmethod
 
 
 class InterfaceValidator(ABC):
-    def __init__(self):
-        self._parameter_names = ['IATA-code from', 'IATA-code to', 'Date on',
-                                 'Date return on']
+    """This class is interface validator"""
 
-
-    @staticmethod
-    def create_available_cities_string(available_cities_dict):
-        """This method creates available cities string"""
-
-        result_string = 'Available cities:\n'
-        result_string += '\n'.join([f'{city_name} ({iata_code})'
-                                    for iata_code, city_name
-                                    in available_cities_dict.items()])
-        return result_string
+    def __init__(self, parameters, parameter_names, validators):
+        self._parameter_names = parameter_names
+        self._validators = validators
+        self._parameters = parameters
 
     @abstractmethod
-    def get_correct_parameters(self, parameters, available_cities):
+    def validating_count_parameters(self):
+        """This method must implements validating count parameters"""
+        pass
+
+    @abstractmethod
+    def validating_parameters(self, parameters, available_cities):
+        """This method must implements validating parameters"""
         pass

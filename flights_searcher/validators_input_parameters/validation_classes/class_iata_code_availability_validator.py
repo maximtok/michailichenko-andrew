@@ -1,7 +1,9 @@
-from interfaces.interface_validation_classes import InterfaceValidator
+"""This module contains class IataCodeAvailabilityValidator"""
+
+from interfaces.interface_validation_classes import InterfaceValidationClasses
 
 
-class IataCodeAvailabilityValidator(InterfaceValidator):
+class IataCodeAvailabilityValidator(InterfaceValidationClasses):
     """This class implements iata-code availability validator"""
 
     def __init__(self, available_cities):
@@ -18,6 +20,4 @@ class IataCodeAvailabilityValidator(InterfaceValidator):
 
             return False
 
-        else:
-
-            return super().validating(parameter, parameter_name)
+        return super().validating(parameter, parameter_name)

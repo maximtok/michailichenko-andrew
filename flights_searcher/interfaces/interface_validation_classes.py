@@ -1,7 +1,10 @@
+"""This module contains class InterfaceValidationClasses"""
+
 from abc import ABC, abstractmethod
 
 
-class InterfaceValidator(ABC):
+class InterfaceValidationClasses(ABC):
+    """This class is interface validation classes"""
 
     _next_validator = None
 
@@ -15,10 +18,9 @@ class InterfaceValidator(ABC):
     @abstractmethod
     def validating(self, parameter, parameter_name):
         """This method validates parameter and returns result"""
+
         if self._next_validator:
 
             return self._next_validator.validating(parameter, parameter_name)
 
-        else:
-
-            return True
+        return True

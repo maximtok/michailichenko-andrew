@@ -1,3 +1,5 @@
+"""This module contains class Handler"""
+
 from itertools import product
 from interfaces.interface_handler import InterfaceHandler
 from handlers.class_flight import Flight
@@ -20,12 +22,11 @@ class Handler(InterfaceHandler):
             return self._create_handled_search_flights_result_string(
                 list_result_search)
 
-        else:
-            combinations = self._combine_flights(list_result_search)
-            round_trips = self._round_trips_filtering(combinations)
-            result = self._create_list_of_strings_with_total_price(round_trips)
+        combinations = self._combine_flights(list_result_search)
+        round_trips = self._round_trips_filtering(combinations)
+        result = self._create_list_of_strings_with_total_price(round_trips)
 
-            return self._create_handled_search_flights_result_string(result)
+        return self._create_handled_search_flights_result_string(result)
 
     @staticmethod
     def _sorting_flights(flights_info):
@@ -73,10 +74,8 @@ class Handler(InterfaceHandler):
 
             return 'No flights found for your request'
 
-        else:
+        flights = [flight for round_trip in flights
+                   for flight in round_trip]
+        result_string = '\n'.join(map(str, flights))
 
-            flights = [flight for round_trip in flights
-                       for flight in round_trip]
-            result_string = '\n'.join(map(str, flights))
-
-            return 'Found flights:\n' + result_string
+        return 'Found flights:\n' + result_string

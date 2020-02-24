@@ -1,3 +1,5 @@
+"""This module contains class Flight"""
+
 from copy import deepcopy
 
 

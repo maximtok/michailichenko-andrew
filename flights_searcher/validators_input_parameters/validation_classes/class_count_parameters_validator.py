@@ -1,7 +1,9 @@
-from interfaces.interface_validation_classes import InterfaceValidator
+"""This module contains class CountParametersValidator"""
+
+from interfaces.interface_validation_classes import InterfaceValidationClasses
 
 
-class CountParametersValidator(InterfaceValidator):
+class CountParametersValidator(InterfaceValidationClasses):
     """This class implements count parameters validator"""
 
     def validating(self, parameter, parameter_name):
@@ -13,6 +15,4 @@ class CountParametersValidator(InterfaceValidator):
 
             return False
 
-        else:
-
-            return super().validating(parameter, parameter_name)
+        return super().validating(parameter, parameter_name)

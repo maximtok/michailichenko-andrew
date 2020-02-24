@@ -1,3 +1,5 @@
+"""This module contains class InterfaceFlightSearcher"""
+
 from abc import ABC, abstractmethod
 
 
