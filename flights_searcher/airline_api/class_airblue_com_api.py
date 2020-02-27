@@ -4,10 +4,9 @@ from datetime import datetime, timedelta
 from copy import deepcopy
 from lxml import html
 import requests
-from interfaces.interface_airline_site_api import InterfaceAirlineSiteApi
 
 
-class AirblueComApi(InterfaceAirlineSiteApi):
+class AirblueComApi:
     """This class implements Airblue airline site API"""
 
     def searching_flights(self, iata_from, iata_to, date_on, date_return_on='',

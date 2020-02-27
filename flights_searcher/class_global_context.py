@@ -4,22 +4,8 @@ from airline_api.class_airblue_com_api import AirblueComApi
 from validators_input_parameters.class_iata_codes_and_dates_validator \
     import ValidatorIataCodesAndDates
 from handlers.class_handler import Handler
-from validators_input_parameters.validation_classes.\
-    class_iata_code_correctness_validator import IataCodeCorrectnessValidator
-from validators_input_parameters.validation_classes.\
-    class_iata_code_availability_validator import IataCodeAvailabilityValidator
-from validators_input_parameters.validation_classes.\
-    class_format_date_validator import FormatDateValidator
-from validators_input_parameters.validation_classes.\
-    class_compare_with_todays_date import CompareWithTodaysDate
-from validators_input_parameters.validation_classes.\
-    class_count_parameters_validator import CountParametersValidator
-from validators_input_parameters.validation_classes.\
-    class_inequality_iata_codes_validator import InequalityIataCodesValidator
-from validators_input_parameters.validation_classes.\
-    class_date_delta_validator import DateDeltaValidator
-from parameters_getter.class_parameters_getter \
-    import ParametersGetter
+from validators_input_parameters import validation_classes
+from parameters_getter.class_parameters_getter import ParametersGetter
 
 
 class GlobalContext:
@@ -58,7 +44,7 @@ class GlobalContext:
     def _create_parameter_validators_list(self):
         """This method creates parameters validators list"""
 
-        result = [CountParametersValidator()]
+        result = [validation_classes.CountParametersValidator()]
 
         if len(self.parameters) in (3, 4):
             result.extend([self._create_iata_code_from_validator(),
@@ -73,9 +59,10 @@ class GlobalContext:
     def _create_iata_code_from_validator(self):
         """This method creates chain iata-code from validation"""
 
-        validator_iata_code_correctness = IataCodeCorrectnessValidator()
-        validator_iata_code_availability = IataCodeAvailabilityValidator(
-            self.available_cities)
+        validator_iata_code_correctness = validation_classes.\
+            IataCodeCorrectnessValidator()
+        validator_iata_code_availability = validation_classes.\
+            IataCodeAvailabilityValidator(self.available_cities)
 
         validator_iata_code_correctness.set_next(
             validator_iata_code_availability)
@@ -85,11 +72,13 @@ class GlobalContext:
     def _create_iata_code_to_validator(self):
         """This method creates chain iata-code to validation"""
 
-        validator_iata_code_correctness = IataCodeCorrectnessValidator()
-        validator_iata_code_availability = IataCodeAvailabilityValidator(
-            self.available_cities)
-        validator_iata_codes_inequality = InequalityIataCodesValidator(
-            self.parameters[0])
+        validator_iata_code_correctness = validation_classes.\
+            IataCodeCorrectnessValidator()
+        validator_iata_code_availability = validation_classes.\
+            IataCodeAvailabilityValidator(self.available_cities)
+        validator_iata_codes_inequality = validation_classes.\
+            InequalityIataCodesValidator(self.parameters[0])
+
         validator_iata_code_correctness.set_next(
             validator_iata_code_availability)
         validator_iata_code_availability.set_next(
@@ -101,8 +90,8 @@ class GlobalContext:
     def _create_date_on_validator():
         """This method creates chain date on validation"""
 
-        validator_format_date = FormatDateValidator()
-        compare_with_todays_date = CompareWithTodaysDate()
+        validator_format_date = validation_classes.FormatDateValidator()
+        compare_with_todays_date = validation_classes.CompareWithTodaysDate()
 
         validator_format_date.set_next(compare_with_todays_date)
 
@@ -111,9 +100,10 @@ class GlobalContext:
     def _create_date_return_on_validator(self):
         """This method creates chain date return on validation"""
 
-        validator_format_date = FormatDateValidator()
-        compare_with_todays_date = CompareWithTodaysDate()
-        validator_date_delta = DateDeltaValidator(self.parameters[2])
+        validator_format_date = validation_classes.FormatDateValidator()
+        compare_with_todays_date = validation_classes.CompareWithTodaysDate()
+        validator_date_delta = validation_classes.DateDeltaValidator(
+            self.parameters[2])
 
         validator_format_date.set_next(compare_with_todays_date)
         compare_with_todays_date.set_next(validator_date_delta)

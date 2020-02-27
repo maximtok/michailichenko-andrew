@@ -1,10 +1,13 @@
 """This module contains class ValidatorIataCodesAndDates"""
 
-from interfaces.interface_validator import InterfaceValidator
 
-
-class ValidatorIataCodesAndDates(InterfaceValidator):
+class ValidatorIataCodesAndDates:
     """This class implements validate iata-codes and dates"""
+
+    def __init__(self, parameters, parameter_names, validators):
+        self._parameter_names = parameter_names
+        self._validators = validators
+        self._parameters = parameters
 
     def validating_count_parameters(self):
         """This method validates count parameters"""

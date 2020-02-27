@@ -1,11 +1,10 @@
 """This module contains class Handler"""
 
 from itertools import product
-from interfaces.interface_handler import InterfaceHandler
 from handlers.class_flight import Flight
 
 
-class Handler(InterfaceHandler):
+class Handler:
     """This class implements search flights result dictionary handler"""
 
     def handle(self, dict_result_search):

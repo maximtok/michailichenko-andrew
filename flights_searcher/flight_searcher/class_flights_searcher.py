@@ -1,10 +1,11 @@
 """This module contains class FlightSearcher"""
 
-from interfaces.interface_flights_searcher import InterfaceFlightsSearcher
 
-
-class ClassFlightsSearcher(InterfaceFlightsSearcher):
+class ClassFlightsSearcher:
     """This class implements flight search algorithm"""
+
+    def __init__(self, context):
+        self._context = context
 
     def searching(self):
         """This method searches flights"""

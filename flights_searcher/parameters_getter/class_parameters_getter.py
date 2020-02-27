@@ -1,10 +1,13 @@
 """This module contains class ParametersGetter"""
 
-from interfaces.interface_parameters_getter import InterfaceParametersGetter
 
-
-class ParametersGetter(InterfaceParametersGetter):
+class ParametersGetter:
     """This class implements parameters getter"""
+
+    def __init__(self, parameter_names, available_cities):
+        self._parameter_names = parameter_names
+        self.available_cities_string = self._create_available_cities_string(
+            available_cities)
 
     def get_correct_parameters(self, validator, parameters):
         """
@@ -90,3 +93,13 @@ class ParametersGetter(InterfaceParametersGetter):
         result += ', '.join(incorrect_parameters_list)
 
         return result
+
+    @staticmethod
+    def _create_available_cities_string(available_cities_dict):
+        """This method creates available cities string"""
+
+        result_string = 'Available cities:\n'
+        result_string += '\n'.join([f'{city_name} ({iata_code})'
+                                    for iata_code, city_name
+                                    in available_cities_dict.items()])
+        return result_string
