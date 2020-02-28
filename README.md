@@ -30,3 +30,5 @@ You need to use git clone for download flight searcher
 ### Prerequisites
 - [python](https://www.python.org/): we recommend using the python version 3.7.x
 - [click](https://click.palletsprojects.com/): we recommend using the click version 7.x
+- [lxml](https://lxml.de/): we recommend using the lxml version 4.4.x
+- [requests](https://requests.readthedocs.io/): we recommend using the requests version 2.22.x
